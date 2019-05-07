@@ -1,0 +1,218 @@
+{
+  "/biblios/{biblio_id}/allows_checkout": {
+    "get": {
+      "x-mojo-to": "Cz::Knihovny::AvailabilityApi::CheckoutsController#get_biblio_checkout_availability",
+      "operationId": "get_biblio_checkout_availability",
+      "tags": ["biblios checkouts availability"],
+      "parameters": [
+        {
+          "description": "Internal identifier for bibliographic records",
+          "in": "path",
+          "name": "biblio_id",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "patron_id",
+          "in": "query",
+          "description": "Internal patron identifier",
+          "type": "integer"
+        },
+        {
+          "name": "library_id",
+          "in": "query",
+          "description": "Internal library identifier",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "A checkout availiability information for all items of this bibliographic record"
+        },
+        "404": {
+          "description": "An error occured",
+          "schema": {
+              "type": "object",
+                "properties": {
+                  "error": {
+                    "description": "An explanation for the error",
+                    "type": "string"
+                  }
+                }
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "circulation": "1"
+        }
+      }
+    }
+  },
+  "/biblios/{biblio_id}/allows_hold": {
+    "get": {
+      "x-mojo-to": "Cz::Knihovny::AvailabilityApi::HoldsController#get_biblio_hold_availability",
+      "operationId": "get_biblio_hold_availability",
+      "tags": ["biblios holds availability"],
+      "parameters": [
+        {
+          "description": "Internal identifier for bibliographic records",
+          "in": "path",
+          "name": "biblio_id",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "patron_id",
+          "in": "query",
+          "required": true,
+          "description": "Internal patron identifier",
+          "type": "integer"
+        },
+        {
+          "name": "library_id",
+          "in": "query",
+          "required": true,
+          "description": "Internal library identifier",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "A hold availability information for all items of a bibliographic record"
+        },
+        "404": {
+          "description": "An error occured",
+          "schema": {
+              "type": "object",
+                "properties": {
+                  "error": {
+                    "description": "An explanation for the error",
+                    "type": "string"
+                  }
+                }
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "circulation": "1"
+        }
+      }
+    }
+  },
+  "/items/{item_id}/allows_checkout": {
+    "get": {
+      "x-mojo-to": "Cz::Knihovny::AvailabilityApi::CheckoutsController#get_item_checkout_availability",
+      "operationId": "get_item_checkout_availability",
+      "tags": ["items", "checkouts", "availability"],
+      "parameters": [
+        {
+          "description": "Internal identifier for items",
+          "in": "path",
+          "name": "item_id",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "patron_id",
+          "in": "query",
+          "description": "Internal patron identifier",
+          "type": "integer"
+        },
+        {
+          "name": "library_id",
+          "in": "query",
+          "description": "Internal library identifier",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "A checkotu availability information of an item"
+        },
+        "404": {
+          "description": "An error occured",
+          "schema": {
+              "type": "object",
+                "properties": {
+                  "error": {
+                    "description": "An explanation for the error",
+                    "type": "string"
+                  }
+                }
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "circulation": "1"
+        }
+      }
+    }
+  },
+  "/items/{item_id}/allows_hold": {
+    "get": {
+      "x-mojo-to": "Cz::Knihovny::AvailabilityApi::HoldsController#get_item_hold_availability",
+      "operationId": "get_item_hold_availability",
+      "tags": ["items", "holds", "availability"],
+      "parameters": [
+        {
+          "description": "Internal identifier for items",
+          "in": "path",
+          "name": "item_id",
+          "required": true,
+          "type": "integer"
+        },
+        {
+          "name": "patron_id",
+          "in": "query",
+          "required": true,
+          "description": "Internal patron identifier",
+          "type": "integer"
+        },
+        {
+          "name": "library_id",
+          "in": "query",
+          "required": true,
+          "description": "Internal library identifier",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "Holds availability information for the item"
+        },
+        "404": {
+          "description": "An error occured",
+          "schema": {
+              "type": "object",
+                "properties": {
+                  "error": {
+                    "description": "An explanation for the error",
+                    "type": "string"
+                  }
+                }
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "circulation": "1"
+        }
+      }
+    }
+  }
+}
