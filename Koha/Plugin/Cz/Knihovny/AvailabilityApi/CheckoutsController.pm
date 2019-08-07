@@ -86,13 +86,21 @@ sub get_item_checkout_availability {
 sub _item_availability {
     my ( $item ) = @_;
 
-    my $checkouts = Koha::Checkouts->count({ itemnumber => $item->itemnumber });
+    my $checkout = Koha::Checkouts->find({ itemnumber => $item->itemnumber });
     my $waiting_holds = Koha::Holds->count({ itemnumber => $item->itemnumber, found => { in => [ "W", "T" ] } } );
     my $transfers = Koha::Item::Transfers->count({ itemnumber => $item->itemnumber, datearrived => undef });
 
+    my $status = 'on_shelf';
+    $status = 'in_transfer' if $transfers;
+    $status = 'waiting_hold' if $waiting_holds;
+    $status = 'checked_out' if $checkout;
+
     my $availability = {
-        allows_checkout => ($checkouts || $waiting_holds || $transfers ) ? Mojo::JSON::false : Mojo::JSON->true,
+        allows_checkout => ($checkout || $waiting_holds || $transfers ) ? Mojo::JSON::false : Mojo::JSON->true,
+        allows_checkout_status => $status,
     };
+
+    $availability->{date_due} = $checkout->date_due if $checkout;
 
     return $availability;
 }
